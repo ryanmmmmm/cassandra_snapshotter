@@ -121,6 +121,7 @@ class RestoreWorker(object):
         tables = set()
 
         for k in bucket.list(self.snapshot.base_path):
+            logging.info("bucket name" + k)
             r = self.keyspace_table_matcher.search(k.name)
             if not r:
                 continue
@@ -147,6 +148,9 @@ class RestoreWorker(object):
         if os.path.exists(keyspace_path) and os.path.isdir(keyspace_path):
             logging.warning("Deleteing directory (%s)..." % keyspace_path)
             shutil.rmtree(keyspace_path)
+        else:
+            logging.info("nothing found..." + keyspace_path)
+
 
         for table in tables:
             path = './%s/%s' % (keyspace, table)
